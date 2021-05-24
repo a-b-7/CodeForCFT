@@ -1,0 +1,32 @@
+{
+    "Outputs": {
+        "rAppflowRunEnd": {
+            "Properties": {
+                "Description": "Event CFT Module",
+                "EventPattern": {
+                    "detail-type": [
+                        "AppFlow End Flow Run Report"
+                    ],
+                    "source": [
+                        "aws.appflow"
+                    ]
+                }
+            },
+            "Type": "AWS::Events::Rule"
+        },
+        "rPermissionForRuleToInvokeLambda": {
+            "Properties": {
+                "Action": "lambda:InvokeFunction",
+                "FunctionName": "rABCLambdaAppflowIntegration",
+                "Principal": "events.amazonaws.com",
+                "SourceArn": "AppflowRunEnd"
+            },
+            "Type": "AWS::Lambda::Permission"
+        },
+        "target": {
+            "Arn": "rABCLambdaAppflowIntegration",
+            "Id": "AppflowLogsFunction"
+        }
+    },
+    "Resources": {}
+}
