@@ -1,4 +1,23 @@
-Outputs:
+Resources:
+  rABCLambdaAppflowIntegration:
+    Properties:
+      CodeUri:
+        Bucket: ' '
+        Key: ' '
+        Version: ''
+      Description: ' Get Appflow logs'
+      Environment:
+        Variables:
+          - LOGGING_LEVEL
+          - REGION_NAME
+          - CONFIGURATION_ITEM
+      FunctionName: edb_commercial_vvpm_abc_appflow_logs
+      Handler: log_appflow_execution.handler
+      MemorySize: 2048
+      Role: arn:aws:iam::${AWS::AccountId}:role/${pLambdaServiceRole}
+      Runtime: ' python3.7'
+      Timeout: 900
+    Type: AWS::Serverless::Function
   rAppflowRunEnd:
     Properties:
       Description: Event CFT Module
@@ -7,15 +26,36 @@ Outputs:
           - AppFlow End Flow Run Report
         source:
           - aws.appflow
+      Targets:
+        - Arn: ' arn _ rVeevaLoadingStrategyLambda'
+          Id: LoadingAppflow
+        - Arn: ' arn _ rVeevaLoadingStrategyLambda'
+          Id: LoadingAppflow
     Type: AWS::Events::Rule
   rPermissionForRuleToInvokeLambda:
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: rABCLambdaAppflowIntegration
       Principal: events.amazonaws.com
-      SourceArn: AppflowRunEnd
+      SourceArn: arn_rAppflowRunEnd
     Type: AWS::Lambda::Permission
-  target:
-    Arn: rABCLambdaAppflowIntegration
-    Id: AppflowLogsFunction
-Resources: {}
+  rVeevaLoadingStrategyLambda:
+    Properties:
+      CodeUri:
+        Bucket: ' '
+        Key: ' '
+        Version: ''
+      Description: Lambda function to invoke appflow and load data
+      Environment:
+        Variables:
+          - SNOW_LAMBDA
+          - MASTER_CONFIG_PATH
+          - CONFIGURATION_ITEM
+          - APPFLOW_NAME_PREFIX
+      FunctionName: edb_commercial_veeva_appflow_loading_strategy_automation
+      Handler: ' loading_strategy_automation.lambda_handler'
+      MemorySize: 2048
+      Role: arn:aws:iam::${AWS::AccountId}:role/${pLambdaServiceRole}
+      Runtime: ' python3.7'
+      Timeout: 900
+    Type: AWS::Serverless::Function
