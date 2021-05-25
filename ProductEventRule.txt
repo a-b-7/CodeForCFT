@@ -1,0 +1,2 @@
+ProductEventRule.py is broken as thr troposphere has no proper documentation for it. It will cause error if designed  without proper documentation.
+Please refer google to build this part or i prefer to make it manually.
